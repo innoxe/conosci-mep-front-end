@@ -8,91 +8,85 @@
 {% endblock %}
 
 {% block body %}
-<section>
-<div class="sheet">
-	<h1>ALL USERS</h1>
+	<section>
+		<div class="sheet">
+			<h1>ALL USERS</h1>
 
-	<div>
-		<table id="table_detail">
-			<tr>
-				{% set temp = users|first %}
-				{% set fields = temp|cast_to_array %}
+			<div>
+				<table id="table_detail">
+					<tr>
+						{% set temp = users|first %}
+						{% set fields = temp|cast_to_array %}
 
-				{% for key, item in fields %}
-
-					<th class="th-header">{{ key|upper }}</th>
-				{% else %}
-					<th>
-						<em>no user found2</em>
-					</th>
-				{% endfor %}
-				<th>POSTS</th>
-			</tr>
-
-			{% for item in users %}
-				{% set colspans = {} %}
-				<tr>
-					{% for key, value in item|cast_to_array %}
-						{% if value is iterable %}
-							<td class="td-value, td_expand  td_{{key}}_{{item.id}}" data-header="{{ key|lower }}" data-id="{{ item.id }}">
-
-								{% set colspans = colspans|merge({(key): loop.index}) %}
-
-								<div class="right">
-									<i class="animate-icon fa fa-chevron-up icon-{{ key|lower }}-{{ item.id }}" aria-hidden="true"></i>
-									{{ key|upper }}
-								</div>
-
-							</td>
+						{% for key, item in fields %}
+							<th class="th-header">{{ key|upper }}</th>
 						{% else %}
-							<td>{{ value }}</td>
-						{% endif %}
-					{% endfor %}
-					<td>
-						<a href="{{ path('listposts',{'username': item.username, 'id': item.id}) }}" class="link-button" target="_blank">show</a>
-					</td>
-				</tr>
-				<tr id="hidden_row_company_{{item.id}}" class="hidden_row">
-					<td colspan={{colspans.company}}>
-						<h3>COMPANY</h3>
-						<ul class="ul-tr-hidden">
-							{% for key, value in item.company|cast_to_array %}
+							<th>
+								<em>no user found2</em>
+							</th>
+						{% endfor %}
+						<th>POSTS</th>
+					</tr>
 
-
-								<li>
-									<strong>{{key|capitalize}}</strong>
-									{{value}}</li>
-
-							{% endfor %}
-						</ul>
-					</td>
-				</tr>
-				<tr id="hidden_row_address_{{item.id}}" class="hidden_row">
-					<td colspan={{colspans.address}}>
-						<h3>ADDRESS</h3>
-						<ul class="ul-tr-hidden">
-							{% for key, value in item.address|cast_to_array %}
+					{% for item in users %}
+						{% set colspans = {} %}
+						<tr>
+							{% for key, value in item|cast_to_array %}
 								{% if value is iterable %}
-									{% else %}
+									<td class="td-value, td_expand  td_{{key}}_{{item.id}}" data-header="{{ key|lower }}" data-id="{{ item.id }}">
 
+										{% set colspans = colspans|merge({(key): loop.index}) %}
+
+										<div class="right">
+											<i class="animate-icon fa fa-chevron-up icon-{{ key|lower }}-{{ item.id }}" aria-hidden="true"></i>
+											{{ key|upper }}
+										</div>
+
+									</td>
+								{% else %}
+									<td>{{ value }}</td>
+								{% endif %}
+							{% endfor %}
+							<td>
+								<a href="{{ path('listposts',{'username': item.username, 'id': item.id}) }}" class="link-button" target="_blank">show</a>
+							</td>
+						</tr>
+						<tr id="hidden_row_company_{{item.id}}" class="hidden_row">
+							<td colspan={{colspans.company}}>
+								<h3>COMPANY</h3>
+								<ul class="ul-tr-hidden">
+									{% for key, value in item.company|cast_to_array %}
 										<li>
 											<strong>{{key|capitalize}}</strong>
 											{{value}}</li>
-								{% endif %}
+									{% endfor %}
+								</ul>
+							</td>
+						</tr>
+						<tr id="hidden_row_address_{{item.id}}" class="hidden_row">
+							<td colspan={{colspans.address}}>
+								<h3>ADDRESS</h3>
+								<ul class="ul-tr-hidden">
+									{% for key, value in item.address|cast_to_array %}
+										{% if value is iterable %}
+											{% else %}
+												<li>
+													<strong>{{key|capitalize}}</strong>
+													{{value}}</li>
+										{% endif %}
 
-							{% endfor %}
-						</ul>
+									{% endfor %}
+								</ul>
 
-					</td>
-				</tr>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+		<section>
+		{% endblock %}
 
-			{% endfor %}
-		</table>
-	</div>
-    </div>
-    <section>
-{% endblock %}
-
-{% block javascripts %}
-	{{ encore_entry_script_tags('main') }}
-{% endblock %}
+		{% block javascripts %}
+			{{ encore_entry_script_tags('main') }}
+		{% endblock %}
