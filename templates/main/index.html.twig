@@ -8,6 +8,8 @@
 {% endblock %}
 
 {% block body %}
+<section>
+<div class="sheet">
 	<h1>ALL USERS</h1>
 
 	<div>
@@ -47,7 +49,7 @@
 						{% endif %}
 					{% endfor %}
 					<td>
-						<a href="{{ path('listposts',{'username': item.username, 'id': item.id}) }}" target="_blank">show</a>
+						<a href="{{ path('listposts',{'username': item.username, 'id': item.id}) }}" class="link-button" target="_blank">show</a>
 					</td>
 				</tr>
 				<tr id="hidden_row_company_{{item.id}}" class="hidden_row">
@@ -87,6 +89,8 @@
 			{% endfor %}
 		</table>
 	</div>
+    </div>
+    <section>
 {% endblock %}
 
 {% block javascripts %}
