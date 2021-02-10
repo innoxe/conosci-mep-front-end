@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post!
+{% endblock %}
+
+{% block stylesheets %}
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+	{{ encore_entry_link_tags('main') }}
+{% endblock %}
+
+{% block body %}
+
+	{% set userData = user|first %}
+
+
+	<div class="header">
+		<h1>Blog by
+			{{userData.name}}</h1>
+		<p>All posts created by me.</p>
+	</div>
+
+	<div class="row">
+
+		<div class="side">
+			<h2 style="text-align:center">About Me</h2>
+			<div class="card-profile">
+				<img src="{{ asset('/images/user-profile-placeholder.png')}}" alt="John" style="width:100%">
+				<h1>{{userData.name}}</h1>
+				<p class="title">{{userData.username}}</p>
+				<div style="margin: 24px 0; text-align: left; padding: 20px">
+					<a href="#">
+						<i class="fa fa-envelope-o">
+							<span class="fa-icon-innter-text">{{userData.email}}</span>
+						</i>
+					</a>
+					<a href="#">
+						<i class="fa fa-phone ">
+							<span class="fa-icon-innter-text">{{userData.phone}}</span>
+						</i>
+					</a>
+					<a href="#">
+						<i class="fa fa-globe">
+							<span class="fa-icon-innter-text">{{userData.website}}</span>
+						</i>
+					</a>
+
+				</div>
+				<p>
+					<button>Contact</button>
+				</p>
+			</div>
+		</div>
+
+		<div class="main">
+			<h1>All My Posts</h1>
+			{% for item in posts %}
+				<div class="card">
+					<h2>{{item.title|capitalize }}</h2>
+					<div class="fakeimg" style="height:200px;">Image</div>
+					<p>{{item.body}}</p>
+					<p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+				</div>
+			{% endfor %}
+		</div>
+
+
+	</div>
+
+	<div class="footer">
+		<h2>Footer</h2>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+
+	{{ encore_entry_script_tags('main') }}
+
+	<script>
+
+		window.onload = function () {};
+	</script>
+{% endblock %}

@@ -1,38 +1,94 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Conosci MEP!{% endblock %}
-
+{% block title %}Conosci MEP!
+{% endblock %}
 {% block stylesheets %}
-    {{ encore_entry_link_tags('main') }}
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+	{{ encore_entry_link_tags('main') }}
 {% endblock %}
 
 {% block body %}
-    <h1>Conosci MEP</h1>
+	<h1>ALL USERS</h1>
 
-    <p>
-        Ciao, questa piccola applicazione <strong>Symfony</strong> è stata pensata per farti
-        conoscere un po' meglio MEP e gli strumenti con cui lavoriamo.
-    </p>
+	<div>
+		<table id="table_detail">
+			<tr>
+				{% set temp = users|first %}
+				{% set fields = temp|cast_to_array %}
 
-    <h2>Che cosa hai a disposizione</h2>
-    <p>
-        Ti vengono forniti alcuni dati fake, copiati da <a href="https://jsonplaceholder.typicode.com/"
-        target="_blank">jsonplaceholder.typicode.com</a>, puoi usarli a tuo piacimento:
-    </p>
+				{% for key, item in fields %}
 
-    <ul>
-        <li>
-            Questo template Twig riceve una variabile <code>users</code> contenente dati fake su
-            alcuni utenti:
-            {{ dump(users) }}
-        </li>
-        <li>
-            Altri dati fake su dei "post" possono essere ottenuti tramite una chiamata asincrona a
-            <a href="{{ path('posts') }}" target="_blank">questo indirizzo</a>
-        </li>
-    </ul>
+					<th class="th-header">{{ key|upper }}</th>
+				{% else %}
+					<th>
+						<em>no user found2</em>
+					</th>
+				{% endfor %}
+				<th>POSTS</th>
+			</tr>
+
+			{% for item in users %}
+				{% set colspans = {} %}
+				<tr>
+					{% for key, value in item|cast_to_array %}
+						{% if value is iterable %}
+							<td class="td-value, td_expand  td_{{key}}_{{item.id}}" data-header="{{ key|lower }}" data-id="{{ item.id }}">
+
+								{% set colspans = colspans|merge({(key): loop.index}) %}
+
+								<div class="right">
+									<i class="animate-icon fa fa-chevron-up icon-{{ key|lower }}-{{ item.id }}" aria-hidden="true"></i>
+									{{ key|upper }}
+								</div>
+
+							</td>
+						{% else %}
+							<td>{{ value }}</td>
+						{% endif %}
+					{% endfor %}
+					<td>
+						<a href="{{ path('listposts',{'username': item.username, 'id': item.id}) }}" target="_blank">show</a>
+					</td>
+				</tr>
+				<tr id="hidden_row_company_{{item.id}}" class="hidden_row">
+					<td colspan={{colspans.company}}>
+						<h3>COMPANY</h3>
+						<ul class="ul-tr-hidden">
+							{% for key, value in item.company|cast_to_array %}
+
+
+								<li>
+									<strong>{{key|capitalize}}</strong>
+									{{value}}</li>
+
+							{% endfor %}
+						</ul>
+					</td>
+				</tr>
+				<tr id="hidden_row_address_{{item.id}}" class="hidden_row">
+					<td colspan={{colspans.address}}>
+						<h3>ADDRESS</h3>
+						<ul class="ul-tr-hidden">
+							{% for key, value in item.address|cast_to_array %}
+								{% if value is iterable %}
+									{% else %}
+
+										<li>
+											<strong>{{key|capitalize}}</strong>
+											{{value}}</li>
+								{% endif %}
+
+							{% endfor %}
+						</ul>
+
+					</td>
+				</tr>
+
+			{% endfor %}
+		</table>
+	</div>
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('main') }}
+	{{ encore_entry_script_tags('main') }}
 {% endblock %}
